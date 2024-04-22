@@ -25,6 +25,7 @@
 #include <framework/core/declarations.h>
 #include <framework/core/timer.h>
 #include <framework/graphics/cachedtext.h>
+#include <deque>
 #include "mapview.h"
 #include "outfit.h"
 #include "thing.h"
@@ -306,6 +307,13 @@ private:
     ThingType* m_mountType{ nullptr };
 
     UIWidgetPtr m_widgetInformation;
+
+    std::deque<Point> m_oldPositions;
+    std::deque<Point> m_oldDest;
+    std::deque<Point> m_oldWalkOffset;
+    std::deque<Point> m_oldScale;
+
+
 
 #ifndef BOT_PROTECTION
     StaticTextPtr m_text;

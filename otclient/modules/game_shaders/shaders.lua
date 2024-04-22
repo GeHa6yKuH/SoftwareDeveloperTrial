@@ -129,6 +129,7 @@ end
 function attachShaders()
     local map = modules.game_interface.getMapPanel()
     map:setShader('Default')
+    g_logger.info('attach Shaders executes!')
 
     local player = g_game.getLocalPlayer()
     player:setShader('Default')

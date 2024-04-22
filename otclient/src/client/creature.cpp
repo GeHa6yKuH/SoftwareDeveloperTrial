@@ -72,10 +72,33 @@ void Creature::onCreate() {
     callLuaField("onCreate");
 }
 
+// calculating distance between 2 points
+
+//double distance(const Point& p1, const Point& p2) {
+//    double dx = p2.x - p1.x;
+//    double dy = p2.y - p1.y;
+//    return std::sqrt(dx * dx + dy * dy);
+//}
+
 void Creature::draw(const Point& dest, bool drawThings, LightView* lightView)
 {
     if (!canBeSeen() || !canDraw())
         return;
+    // remembering the players position 
+    m_oldPositions.push_front(dest + m_walkOffset * g_drawPool.getScaleFactor());
+
+    // queue deleting positions if more then 10
+    if (m_oldPositions.size() > 10)
+        m_oldPositions.pop_back();
+
+
+    // drawing players shadow by implementing shader replication
+    for (size_t i = m_oldPositions.size(); i-- > 0;) {
+        float alpha = (std::max)(0.0f, 1.0f - static_cast<float>(i) / static_cast<float>(m_oldPositions.size()));
+        Color color = Color(1.0f, 1.0f, 1.0f, 0.5f);
+        internalDraw(m_oldPositions[i], lightView, color);
+    }
+
 
     if (drawThings) {
         if (m_showTimedSquare) {
@@ -131,6 +154,7 @@ void Creature::draw(const Rect& destRect, uint8_t size)
             internalDraw(p, nullptr, getHighlightColor());
     } g_drawPool.releaseFrameBuffer(destRect);
 }
+
 
 void Creature::drawInformation(const MapPosInfo& mapRect, const Point& dest, int drawFlags)
 {
@@ -464,6 +488,12 @@ void Creature::updateJump()
 
 void Creature::onPositionChange(const Position& newPos, const Position& oldPos)
 {
+   /* m_previousPositions.push_back(oldPos);
+
+    while (m_previousPositions.size() > 4) {
+        m_previousPositions.pop_front();
+    }*/
+
     callLuaField("onPositionChange", newPos, oldPos);
 }
 

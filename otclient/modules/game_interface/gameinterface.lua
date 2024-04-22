@@ -1005,6 +1005,7 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
     player:stopAutoWalk()
 
     if autoWalkPos and keyboardModifiers == KeyboardNoModifier and mouseButton == MouseLeftButton then
+        g_logger.info('auto walk in process!')
         player:autoWalk(autoWalkPos)
         return true
     end

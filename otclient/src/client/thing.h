@@ -174,11 +174,20 @@ public:
     virtual void onPositionChange(const Position& /*newPos*/, const Position& /*oldPos*/) {}
     virtual void onAppear() {}
     virtual void onDisappear() {};
+
     const Color& getMarkedColor() {
         if (m_markedColor == Color::white)
             return Color::white;
 
         m_markedColor.setAlpha(0.1f + std::abs(500 - g_clock.millis() % 1000) / 1000.0f);
+        return m_markedColor;
+    }
+
+    const Color& getMarkedColor(float alpha) {
+        if (m_markedColor == Color::white)
+            return Color::white;
+
+        m_markedColor.setAlpha(alpha);
         return m_markedColor;
     }
 
@@ -190,6 +199,14 @@ public:
             return Color::white;
 
         m_highlightColor.setAlpha(0.1f + std::abs(500 - g_clock.millis() % 1000) / 1000.0f);
+        return m_highlightColor;
+    }
+
+    const Color& getHighlightColor(float alpha) {
+        if (m_highlightColor == Color::white)
+            return Color::white;
+
+        m_highlightColor.setAlpha(0.1f + std::abs(500 - g_clock.millis() % 1000) / alpha);
         return m_highlightColor;
     }
 
